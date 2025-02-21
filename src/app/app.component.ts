@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   todos: any[] = [];
 
   newTodo = new FormControl('');
-  apiUrl = 'http://localhost:8080/todos';
+  apiUrl = 'http://a66b797e5e17b4c7999aa09446928b8c-1506866256.eu-north-1.elb.amazonaws.com/todos';
 
   constructor(private http: HttpClient) {}
 
@@ -24,9 +24,9 @@ export class AppComponent implements OnInit {
   }
 
   addTodo() {
-  console.log("newTodo bbbb=>", this.newTodo);
     this.http.post<any>(this.apiUrl, { title: this.newTodo.value, completed: false }).subscribe(todo => {
       this.todos.push(todo);
+      this.newTodo.reset();
     });
   }
 
