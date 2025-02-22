@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, Validators } from '@angular/forms';  // Import Validators
+import { interval } from 'rxjs';  // Import interval
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,11 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadTodos();
+     // Set up a timer to reload data every 2 seconds
+      this.loadTodos();
+       interval(500).subscribe(() => {
+         this.loadTodos();
+       });
   }
   loadTodos() {
     this.http.get<any[]>(this.apiUrl).subscribe(data => this.todos = data);
@@ -24,14 +29,32 @@ export class AppComponent implements OnInit {
 
   addTodo() {
     this.http.post<any>(this.apiUrl, { title: this.newTodo.value, completed: false }).subscribe(todo => {
-      this.todos.push(todo);
+      this.loadTodos();
       this.newTodo.reset();
     });
   }
 
   deleteTodo(id: number) {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe(() => {
-      this.todos = this.todos.filter(todo => todo.id !== id);
+     this.loadTodos();
     });
   }
+
+    exportToCSV() {
+      if (this.todos.length === 0) return;
+
+      const headers = ["ID", "Title", "Completed"];
+      const csvRows = this.todos.map(todo => `${todo.id},${todo.title},${todo.completed}`);
+
+      const csvContent = [headers.join(","), ...csvRows].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.setAttribute("href", url);
+      a.setAttribute("download", "todos.csv");
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
 }

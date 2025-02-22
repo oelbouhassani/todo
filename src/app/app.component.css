@@ -62,3 +62,18 @@ li button:hover {
   color: #666;
   cursor: not-allowed;
 }
+/* Style for the export button */
+.export-button {
+  margin-bottom: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.export-button:hover {
+  background-color: #218838;
+}
