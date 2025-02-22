@@ -2,12 +2,11 @@
   <h1>To-Do List</h1>
   <form (submit)="addTodo()">
     <input [formControl]="newTodo" type="text" />
-    <button type="submit">Add</button>
-  </form>
+    <button type="submit" [disabled]="newTodo.invalid" class="button" >Add</button>  </form>
   <ul>
     <li *ngFor="let todo of todos">
       {{ todo.title }}
-      <button (click)="deleteTodo(todo.id)">Delete</button>
+      <button (click)="deleteTodo(todo.id)" class="button">Delete</button>
     </li>
   </ul>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormControl } from '@angular/forms';  // Import FormControl
+import { FormControl, Validators } from '@angular/forms';  // Import Validators
 
 @Component({
   selector: 'app-root',
@@ -10,15 +10,14 @@ import { FormControl } from '@angular/forms';  // Import FormControl
 export class AppComponent implements OnInit {
   todos: any[] = [];
 
-  newTodo = new FormControl('');
-  apiUrl = 'http://a66b797e5e17b4c7999aa09446928b8c-1506866256.eu-north-1.elb.amazonaws.com/todos';
+  newTodo = new FormControl('', Validators.required)
+  apiUrl = 'https://my00tey55i.execute-api.eu-north-1.amazonaws.com/main/todos';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadTodos();
   }
-
   loadTodos() {
     this.http.get<any[]>(this.apiUrl).subscribe(data => this.todos = data);
   }
