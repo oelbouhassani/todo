@@ -13,11 +13,15 @@ export class AppComponent implements OnInit {
 
   newTodo = new FormControl('', Validators.required)
   apiUrl = 'https://my00tey55i.execute-api.eu-north-1.amazonaws.com/main/todos';
-
+  userIp : any;
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
      // Set up a timer to reload data every 2 seconds
+     this.http.get('https://api.ipify.org?format=json')
+     .subscribe((data:any) => {
+                            this.userIp = data.ip;
+                                   });;
       this.loadTodos();
        interval(500).subscribe(() => {
          this.loadTodos();
@@ -28,7 +32,7 @@ export class AppComponent implements OnInit {
   }
 
   addTodo() {
-    this.http.post<any>(this.apiUrl, { title: this.newTodo.value, completed: false }).subscribe(todo => {
+    this.http.post<any>(this.apiUrl, { title: "IP=> " + this.userIp + " => " +this.newTodo.value, completed: false }).subscribe(todo => {
       this.loadTodos();
       this.newTodo.reset();
     });
