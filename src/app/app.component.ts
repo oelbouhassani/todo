@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   }
 
   addTodo() {
-    this.http.post<any>(this.apiUrl, { title: "IP=> " + this.userIp + " => " +this.newTodo.value, completed: false }).subscribe(todo => {
+    this.http.post<any>(this.apiUrl, { title: "USER IP : " + this.userIp + " ===> " +this.newTodo.value, completed: false }).subscribe(todo => {
       this.loadTodos();
       this.newTodo.reset();
     });
